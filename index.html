@@ -8,17 +8,29 @@
 <meta charset="utf-8">
 <script src="node_modules/systemjs/dist/system.js"></script>
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/mithril/0.2.1/mithril.js"></script>-->
-<script src="config.js"></script>
+<!--<script src="config.js"></script>-->
 <!--<script>
   document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
   ':35729/livereload.js?snipver=1"></' + 'script>')
 </script>-->
 <body>
 <script>
-	
+	System.defaultJSExtensions = true;
     
-    System.import('src/main.js');
+
+    System.config({
+        map: {
+            'mithril': 'node_modules/mithril/mithril.min.js'
+        },
+        meta: {
+            'src/main.js': {
+                deps: ['mithril']
+            }
+        }
+         
+    });
     
+    System.import('./src/main.js');
 </script>
 </body>
 
