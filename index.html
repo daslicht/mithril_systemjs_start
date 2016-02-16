@@ -20,17 +20,17 @@
 
     System.config({
         map: {
-            'mithril': 'node_modules/mithril/mithril.min.js'
+            'mithril': 'node_modules/mithril/mithril.min'
         },
-        meta: {
-            'src/main.js': {
-                deps: ['mithril']
-            }
-        }
+        // meta: {
+        //     'src/main.js': {
+        //         deps: ['mithril']
+        //     }
+        // }
          
     });
     
-    System.import('./src/main.js');
+    System.import('./src/main');
 </script>
 </body>
 

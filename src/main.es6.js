@@ -1,3 +1,5 @@
+import m from 'mithril';
+
 const app = {
   // controller (optional)
   // Ein controller wird 1x pro Instanz aufgerufen und nicht jedes Mal neu gerendert wie der View. Also Daten oder ähnliches sollten im Controller oder komplett extern von "app" gespeichert werden.
