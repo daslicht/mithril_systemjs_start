@@ -1,0 +1,26 @@
+{
+  "name": "start",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marc Wensauer <daslicht@ansolas.de>",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.4.5",
+    "babel-preset-es2015": "^6.3.13",
+    "j2c": "^0.11.0",
+    "mithril": "^0.2.2-rc.1",
+    "polythene": "^0.2.5",
+    "systemjs": "^0.19.20",
+    "transpile-watch": "0.0.3",
+    "uglify-js": "^2.6.1"
+  },
+  "dependencies": {
+    "express": "^4.13.4",
+    "j2c": "^0.11.0",
+    "systemjs": "^0.19.21"
+  }
+}
