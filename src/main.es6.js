@@ -1,12 +1,6 @@
 import m from 'mithril';
 import j2c from 'j2c';
-import styler from 'mithril-j2c';
-
-const cls = styler.attach({
-    '.foo': {
-        background: 'blue'
-    }
-});
+//import styler from 'mithril-j2c';
 
 const news = {
     controller: () => {
@@ -15,7 +9,8 @@ const news = {
     view: () => {
         // Unsere Newsseite
         return m(layout, {
-            title: 'News'
+            title: 'News',
+            content: 'news content'
         });
     }
 };
@@ -27,7 +22,8 @@ const about = {
     view: () => {
         // About us
         return m(layout, {
-            title: 'About us'
+            title: 'About us',
+            content: 'about content'
         });
     }
 };
@@ -42,7 +38,7 @@ const home = {
     view: () => {
         return m(layout, {
             title: 'Home',
-            url: '/home'
+            content: 'home content'
         });
     }
 };
@@ -55,7 +51,7 @@ const content = {
     view: (ctrl) => {
         return m('.content', [
             m('h1', ctrl.title),
-            m('h2', 'Content...')
+            m('h2', ctrl.content)
         ]);
     }
 };
@@ -67,7 +63,8 @@ const layout = {
                 'test': 'bar'
             }),
             m(content, {
-                title: opts.title
+                title: opts.title,
+                content: opts.content
             })
         ]);
     }
@@ -76,7 +73,7 @@ const layout = {
 const menu = {
     view: ({}, opts) => {
         console.log(opts);
-
+        m.route.mode = 'pathname';
 
         var styles = '';
         var liveStyles = '';
@@ -100,7 +97,7 @@ const menu = {
 
         let cls = styler.attach({
             '.foo': {
-                'background-color': 'yellow',
+                'background-color': '#FFFFCC',
                 'width': '794px',
                 'height': '48px'
 
@@ -143,7 +140,7 @@ const menu = {
     }
 };
 
-let test = [];
+let links = [];
 
 const routes = [{
     'component': home,
@@ -160,8 +157,7 @@ const routes = [{
 }, ];
 
 routes.map(link => {
-    test[link.link] = link.component;
+    links[link.link] = link.component;
 });
-console.log(test);
 
-m.route(document.body, '/', test);
+m.route(document.body, '/', links);
