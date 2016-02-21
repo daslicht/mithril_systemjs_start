@@ -1,7 +1,7 @@
 import m from 'mithril';
 import j2c from 'j2c';
 //import styler from 'mithril-j2c';
-
+m.route.mode = 'pathname';
 const news = {
     controller: () => {
         console.log(m.route());
@@ -73,7 +73,7 @@ const layout = {
 const menu = {
     view: ({}, opts) => {
         console.log(opts);
-        m.route.mode = 'pathname';
+
 
         var styles = '';
         var liveStyles = '';
