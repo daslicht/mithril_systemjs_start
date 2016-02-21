@@ -38,13 +38,17 @@ watch ({
     ignore: (process.argv[4] && process.argv[4] !== 'null') ? process.argv[4] : null,
     extension: 'es6.js',
     createOutPath: function(inPath) {
-        return inPath.replace(/es6.js$/, 'js');
+        var outpath = inPath.replace(/es6.js$/, 'js');
+        outpath = outpath.replace(/src/, 'src/js');
+        console.log('outpath: ', outpath);
+        //return inPath.replace(/es6.js$/, 'js');
+        return outpath;
     },
     transform: function(inPath, outPath) {
         return [
-            'babel', '--presets es2015', inPath, '>', outPath,
-            '&&',
-            'uglifyjs', '--screw-ie8 -c -m sort -r \'require,exports\' -o', outPath, outPath
+            'babel', '--presets es2015 --source-maps inline', inPath, '>', outPath,
+            /*'&&',
+            'uglifyjs', '--screw-ie8 -c -m sort -r \'require,exports\' -o', outPath, outPath*/
         ].join(' ');
     }
 });

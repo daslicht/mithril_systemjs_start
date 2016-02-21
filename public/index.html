@@ -1,12 +1,12 @@
 <!doctype html>
 
-<title>Designs - Filters</title>
+<title>Start</title>
 <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta http-equiv="cleartype" content="on">
 <meta charset="utf-8">
-<script src="node_modules/systemjs/dist/system.js"></script>
+<script src="systemjs/system.js"></script>
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/mithril/0.2.1/mithril.js"></script>-->
 <!--<script src="config.js"></script>-->
 <!--<script>
@@ -16,21 +16,17 @@
 <body>
 <script>
 	System.defaultJSExtensions = true;
-    
 
     System.config({
         map: {
-            'mithril': 'node_modules/mithril/mithril.min'
+            'mithril': '/mithril/mithril.min',
+			'j2c' : '/j2c/j2c.global.min',
+			'mithril-j2c' : '/mithril-j2c/j2c.global.min'
         },
-        // meta: {
-        //     'src/main.js': {
-        //         deps: ['mithril']
-        //     }
-        // }
-         
     });
-    
-    System.import('./src/main');
+
+    System.import('./src/js/main');
+    //System.import('./src/main');
 </script>
 </body>
 

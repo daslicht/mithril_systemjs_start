@@ -1,64 +1,167 @@
 import m from 'mithril';
+import j2c from 'j2c';
+import styler from 'mithril-j2c';
 
-const app = {
-  // controller (optional)
-  // Ein controller wird 1x pro Instanz aufgerufen und nicht jedes Mal neu gerendert wie der View. Also Daten oder ähnliches sollten im Controller oder komplett extern von "app" gespeichert werden.
-  controller: () => {
-    let value = 'Meine Value';
-    let prop = m.prop('Mein Prop'); // http://mithril.js.org/mithril.prop.html
-    
-    return {
-      text: 'Hallo Marc!, auch klar oder?',
-      value: value,
-      prop: prop
-    };
-  },
-  
-  // view (notwendig)
-  // ein view wird immer wieder neu gerendert, also je nach window.requestAnimation.
-  // erste Parameter ist dein controller, der hier oben definiert ist.
-  view: (ctrl) => {
-    
-    
-    // m(ELEMENT, INHALT)
-    // return m('h1', 'Text');
-    // oder:
-    // m(ELEMENT, OPTIONEN, INHALT)
-    // OPTIONEN ist immer ein Objekt.
-    // OPTIONEN sind nachher deine HTML Attribute
-    // <h1 style="background: red;">...
-    // INHALT kann auch ein Array sein.
-    //return m('h1', {
-    //  style: 'background: red;'
-    //}, ctrl.text);
-    
-    // Inputs..
-    // Wir haben hier eine extra Methode..
-    // genannt m.withAttr('value', function(value))
-    return m('.learningn', [
-      // Alte Version
-      m('span', ctrl.value),
-      m('input', {
-        value: ctrl.value,
-        placeholder: 'Test Input',
-        // Event bei Eingabe:
-        // jsbin Bug.. man muss oben Rechts leider auf "run with js" klicken damit der das anständig ausführt
-        oninput: m.withAttr('value', (v) => { ctrl.value = v; console.log(v); })
-      }),
-      
-      // ----
-      
-      // Shorthand
-      m('span', ctrl.prop()), // <---- m.prop ist eine Getter/Setter Funktion
-      m('input', {
-        value: ctrl.prop(),
-        // Shorthand in Verbindung mit m.prop()
-        oninput: m.withAttr('value', ctrl.prop) // http://mithril.js.org/mithril.withAttr.html
-      })
-      
-     ]);
-  }
+const cls = styler.attach({
+    '.foo': {
+        background: 'blue'
+    }
+});
+
+const news = {
+    controller: () => {
+        console.log(m.route());
+    },
+    view: () => {
+        // Unsere Newsseite
+        return m(layout, {
+            title: 'News'
+        });
+    }
 };
 
-// Mit m.mount mountest Du Mithril auf ein Element, ich nehme hier einfach den Body.
-m.mount(document.body, app); // http://mithril.js.org/mithril.mount.html
+const about = {
+    controller: () => {
+        console.log('about: ', m.route());
+    },
+    view: () => {
+        // About us
+        return m(layout, {
+            title: 'About us'
+        });
+    }
+};
+
+
+const home = {
+
+    controller: () => {
+        console.log(m.route());
+    },
+
+    view: () => {
+        return m(layout, {
+            title: 'Home',
+            url: '/home'
+        });
+    }
+};
+
+const content = {
+    controller: (opts = {}) => {
+        opts.title = opts.title || 'FOOO';
+        return opts;
+    },
+    view: (ctrl) => {
+        return m('.content', [
+            m('h1', ctrl.title),
+            m('h2', 'Content...')
+        ]);
+    }
+};
+
+const layout = {
+    view: (ctrl, opts = {}) => {
+        return m('.layout', [
+            m(menu, {
+                'test': 'bar'
+            }),
+            m(content, {
+                title: opts.title
+            })
+        ]);
+    }
+};
+
+const menu = {
+    view: ({}, opts) => {
+        console.log(opts);
+
+
+        var styles = '';
+        var liveStyles = '';
+        var styler = {
+            liveUpdate: function(style) {
+                var scopedStyle = j2c.sheet(style);
+                liveStyles += scopedStyle;
+                return scopedStyle;
+            },
+            attach: function(style) {
+                var scopedStyle = j2c.sheet(style);
+                styles += scopedStyle;
+                return scopedStyle;
+            },
+            view: function() {
+                var el = [m('style', styles), m('style', liveStyles)];
+                liveStyles = '';
+                return el;
+            }
+        };
+
+        let cls = styler.attach({
+            '.foo': {
+                'background-color': 'yellow',
+                'width': '794px',
+                'height': '48px'
+
+            },
+            '.links': {
+                'border': 'solid 1px',
+                'padding': '10px',
+                'display': 'block',
+                'width': '150px',
+                'float': 'left',
+                'clear': 'right',
+                'text-align': 'center',
+                'text-decoration': 'none'
+            },
+            '.active': {
+                '@extend': ['.links'],
+                'font-weight': 'bold'
+
+            }
+
+
+        });
+
+        return m('.menu ' + cls.foo, [
+
+            routes.map(link => {
+                return m('a', {
+                    href: link.link,
+                    config: m.route,
+                    //class: m.route() === link.link ? 'active' : 'inactive'
+                    //class: m.route() === link.link ?  cls.links +' '+cls.active : cls.links
+                    class: m.route() === link.link ? cls.active : cls.links
+                }, link.name);
+            }),
+
+
+            styler.view()
+
+        ]);
+    }
+};
+
+let test = [];
+
+const routes = [{
+    'component': home,
+    'link': '/',
+    'name': 'Home'
+}, {
+    'component': about,
+    'link': '/about',
+    'name': 'About'
+}, {
+    'component': news,
+    'link': '/news',
+    'name': 'News'
+}, ];
+
+routes.map(link => {
+    test[link.link] = link.component;
+});
+console.log(test);
+
+m.route(document.body, '/', test);
