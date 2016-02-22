@@ -123,14 +123,18 @@ const menu = {
 
         return m('.menu ' + cls.foo, [
 
-            routes.map(link => {
+            //routes.map(link => {
+
+            Object.keys(routes).forEach( link =>  {
+                let value = routes[link];
+                console.log('value.name:',value.name);
                 return m('a', {
-                    href: link.link,
+                    href: link,
                     config: m.route,
                     //class: m.route() === link.link ? 'active' : 'inactive'
                     //class: m.route() === link.link ?  cls.links +' '+cls.active : cls.links
-                    class: m.route() === link.link ? cls.active : cls.links
-                }, link.name);
+                    class: m.route() === link ? cls.active : cls.links
+                }, value.name);
             }),
 
 
@@ -140,9 +144,8 @@ const menu = {
     }
 };
 
-let links = [];
 
-const routes = [{
+/*const routes = [{
     'component': home,
     'link': '/',
     'name': 'Home'
@@ -156,8 +159,37 @@ const routes = [{
     'name': 'News'
 }, ];
 
+let links = {};
 routes.map(link => {
     links[link.link] = link.component;
+});*/
+
+const routes = {
+    '/': {
+        component: home,
+        'name': 'Home'
+    },
+    '/about': {
+        'component': about,
+        'name': 'About'
+    },
+    '/news': {
+        'component': news,
+        'name': 'News'
+    }
+};
+let links = {};
+Object.keys(routes).forEach( link =>  {
+    let value = routes[link];
+    links[link] = value.component;
 });
+console.log(links);
+/*let links = {};
+routes.forEach(link => {
+    console.log(link);
+    //links[link.link] = link.component;
+});*/
+
+
 
 m.route(document.body, '/', links);
